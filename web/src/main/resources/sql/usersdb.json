@@ -1,0 +1,6 @@
+{
+  "userstable":[
+    {"id":1,"username":"livingroom","passwd":"123123"},
+    {"id":2,"username":"bedroom","passwd":"123456"}
+  ]
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="${contextPath}/css/pagebar.css" type="text/css" />
+<title>USERS列表</title>
+</head>
+<body>
+	<fieldset>
+		<legend>分页演示</legend>
+		<p>查询性别为男的，在上海的会员，且购买总额在10000以上的用户的，当前余额大于500的用户列表，（若一个用户的两个vip账户都满足要求，则应该显示两条数据），结果显示第10页的20条数据。三个子系统，表数据分别为300万，400万，400万，表在不同的库中。</p>
+		<a href="./login">USERS登录</a>
+	</fieldset>
+	<div>
+		<table id="usertable">
+			<thead>
+				<tr>
+					<th>用户编号</th>
+					<th>用户名</th>
+					<th>密码</th>
+				</tr>
+			</thead>
+			<tbody>
+				<#list userList as item>
+				<tr>
+					<td>${item.id!}</td>
+					<td>${item.username!}</td>
+					<td>${item.passwd!}</td>
+				</tr>
+				</#list>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

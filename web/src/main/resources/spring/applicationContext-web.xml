@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Application context definition. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/jdbc
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd "
+	default-autowire="byName">
+
+	<context:annotation-config />
+
+	<mvc:annotation-driven />
+
+	<context:component-scan base-package="com.sveil.other" />
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+	</bean>
+
+
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+	</bean>
+
+	<bean id="byteArrayHttpMessageConverter"
+		class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+	</bean>
+
+	<!-- <bean id="bufferedImageHttpMessageConverter" class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/> -->
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" />
+				<ref bean="byteArrayHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 设置freeMarker的配置文件路径 -->
+	<bean id="freemarkerConfiguration"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="classpath:freemarker.properties" />
+	</bean>
+
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+
+
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="number_format">#</prop>
+			</props>
+		</property>
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="/WEB-INF/pages/ftl/" />
+		<property name="suffix" value=".html" />
+		<property name="requestContextAttribute" value="rc" />
+		<property name="contentType" value="text/html;charset=UTF-8"></property>
+		<property name="exposeSpringMacroHelpers" value="true" />
+	</bean>
+
+	<mvc:view-controller path="/" view-name="redirect:/users/index" />
+	<!-- <mvc:resources mapping="/img/**" location="/img/"/> <mvc:resources 
+		mapping="/js/**" location="/js/"/> <mvc:resources mapping="/css/**" location="/css/" 
+		/> -->
+
+	<!-- DispatcherServlet会在spring上下文寻找 id 为 handlerExceptionResolver作为异常解析器 -->
+	<bean id="handlerExceptionResolver"
+		class="com.sveil.runtime.application.exception.AnnotationHandlerMethodExceptionResolver">
+		<property name="defaultErrorView" value="error/error" /><!-- 错误页面 -->
+		<property name="respMap">
+			<map>
+				<entry key="respCode" value="001999" />
+				<entry key="memo" value="系统错误" />
+			</map>
+		</property>
+	</bean>
+</beans>

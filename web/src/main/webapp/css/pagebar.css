@@ -1,0 +1,6 @@
+.A_PageChange{float:right; width:97.5%; height:30px; color:#333; padding:10px 30px 10px 0; background-color:#FFF; }
+.A_PageChange ul{ margin:0px; padding:0px; list-style:none;}
+.A_PageChange ul li{ float:right; height:30px; padding:0 10px;}
+.A_PageChange ul li span{ border:1px solid #F47F04; width:50px; height:20px; display:inline-block; text-align:center; line-height:20px;}
+.A_PageChange ul li a { text-decoration:none; color:#F47F04;}
+.A_PageChange ul li a:hover { text-decoration:none; color:#023C70;}
